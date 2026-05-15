@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>NU Belgium Dinner Groups</title>
+<title>NU Belgium DOC Dinner Groups</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f4f6fb; color: #222; padding: 1.5rem; }
@@ -32,9 +32,9 @@
   .full-width { grid-column: 1 / -1; }
   .warn { font-size: 0.72rem; background: #fff4e0; color: #7a4000; border-radius: 6px; padding: 4px 8px; margin-bottom: 0.75rem; }
   .submit-row { text-align: center; margin-top: 1.75rem; }
-  button[type=submit] { background: #2a52be; color: #fff; border: none; border-radius: 10px; padding: 12px 36px; font-size: 1rem; cursor: pointer; font-family: inherit; }
-  button[type=submit]:hover { background: #1e3fa0; }
-  button[type=submit]:disabled { background: #aaa; cursor: not-allowed; }
+  button[type=submit] { background: #2a52be; color: #fff; border: none; border-radius: 10px; padding: 12px 36px; font-size: 1rem; cursor: pointer; font-family: inherit; transition: background 0.2s; }
+  button[type=submit]:hover:not(:disabled) { background: #1e3fa0; }
+  button[type=submit]:disabled { background: #ccc; color: #888; cursor: not-allowed; }
   #status { margin-top: 1rem; font-size: 0.9rem; text-align: center; min-height: 1.5rem; }
   .success { color: #1a7a3a; } .error { color: #c0392b; }
 </style>
@@ -43,7 +43,7 @@
 
 <!-- No API keys here — they live in Netlify environment variables -->
 
-<h1>NU Belgium · Dinner Groups</h1>
+<h1>NU Belgium DOC · Dinner Groups</h1>
 <p class="subtitle">Find your dinner group below, click your name, then fill in your preferences. Submit once. The tags next to your name are your Room (e.g. R1 means you're in Room 1) and Project Group (e.g. G1 means you're in Group 1)--This was just for Dr. Gerber to try to make sure that as many people get dinner with "new" people as much as possible.</p>
 
 <form id="plannerForm">
@@ -234,13 +234,16 @@
   </div>
 
   <div class="submit-row">
-    <button type="submit" id="submitBtn">Submit my preferences</button>
+    <button type="submit" id="submitBtn" disabled>Submit my preferences</button>
     <div id="status"></div>
   </div>
 
 </form>
 
 <script>
+// Disable submit until a name is selected
+const submitBtn = document.getElementById("submitBtn");
+
 // Name selection via chip click
 document.querySelectorAll(".student-chip[data-name]").forEach(chip => {
   chip.classList.add("clickable");
@@ -253,6 +256,7 @@ document.querySelectorAll(".student-chip[data-name]").forEach(chip => {
     document.getElementById("nameDisplay").style.color = "#1a7a3a";
     document.getElementById("nameDisplay").style.fontStyle = "normal";
     document.getElementById("nameDisplay").style.fontWeight = "600";
+    submitBtn.disabled = false;
   });
 });
 
