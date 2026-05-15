@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NU Belgium Dinner Groups</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f4f6fb; color: #222; padding: 1.5rem; }
+  h1 { font-size: 1.3rem; margin-bottom: 0.25rem; }
+  .subtitle { font-size: 0.85rem; color: #666; margin-bottom: 1.5rem; }
+  .card { background: #fff; border-radius: 14px; border: 1px solid #e0e4ef; padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; }
+  .card-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 0.4rem; }
+  .dinner-num { font-weight: 700; font-size: 1rem; }
+  .dinner-date { font-size: 0.85rem; color: #555; }
+  .dinner-loc { font-size: 0.75rem; background: #f0f0f0; border-radius: 6px; padding: 2px 8px; color: #444; }
+  .dinner-note { font-size: 0.78rem; color: #888; margin-bottom: 0.85rem; }
+  .students { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1rem; }
+  .student-chip { display: flex; align-items: center; gap: 4px; background: #f7f8fc; border: 1px solid #e5e8f0; border-radius: 8px; padding: 4px 10px; font-size: 0.8rem; }
+  .badge { font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; }
+  .r { background: #deeeff; color: #0a3d7c; }
+  .g { background: #e2f5d6; color: #1f5208; }
+  .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 520px) { .fields { grid-template-columns: 1fr; } }
+  label { font-size: 0.75rem; color: #555; display: block; margin-bottom: 4px; }
+  input, textarea, select { width: 100%; border: 1px solid #ccc; border-radius: 8px; padding: 8px 10px; font-size: 0.85rem; font-family: inherit; resize: vertical; }
+  input:focus, textarea:focus, select:focus { outline: 2px solid #4a7fcb; border-color: transparent; }
+  .full-width { grid-column: 1 / -1; }
+  .warn { font-size: 0.72rem; background: #fff4e0; color: #7a4000; border-radius: 6px; padding: 4px 8px; margin-bottom: 0.75rem; }
+  .submit-row { text-align: center; margin-top: 1.75rem; }
+  button[type=submit] { background: #2a52be; color: #fff; border: none; border-radius: 10px; padding: 12px 36px; font-size: 1rem; cursor: pointer; font-family: inherit; }
+  button[type=submit]:hover { background: #1e3fa0; }
+  button[type=submit]:disabled { background: #aaa; cursor: not-allowed; }
+  #status { margin-top: 1rem; font-size: 0.9rem; text-align: center; min-height: 1.5rem; }
+  .success { color: #1a7a3a; } .error { color: #c0392b; }
+</style>
+</head>
+<body>
+
+<!-- No API keys here — they live in Netlify environment variables -->
+
+<h1>NU Belgium · Dinner Groups</h1>
+<p class="subtitle">Find your dinner group below, then fill in your preferences. Submit once for all dinners.</p>
+
+<form id="plannerForm">
+
+  <!-- STUDENT NAME -->
+  <div class="card">
+    <div style="margin-bottom:0.75rem">
+      <label for="studentName" style="font-size:0.9rem;font-weight:600;color:#222;">Your name</label>
+      <input type="text" id="studentName" name="studentName" placeholder="First and last name" required />
+    </div>
+  </div>
+
+  <!-- DINNER CARDS -->
+
+  <div class="card" id="d1">
+    <div class="card-header">
+      <span class="dinner-num">Dinner 1</span>
+      <span class="dinner-date">Monday, May 18</span>
+      <span class="dinner-loc">Brussels or Leuven</span>
+    </div>
+    <p class="dinner-note">We finish at the European Commission around 5pm. We can stay for dinner in Brussels, or take the train back and eat in Leuven.</p>
+    <div class="students">
+      <span class="student-chip">Maira <span class="badge r">R1</span><span class="badge g">G6</span></span>
+      <span class="student-chip">Oliver <span class="badge r">R7</span><span class="badge g">G1</span></span>
+      <span class="student-chip">Anjali <span class="badge r">R6</span><span class="badge g">G2</span></span>
+      <span class="student-chip">Vineeth <span class="badge r">R2</span><span class="badge g">G7</span></span>
+      <span class="student-chip">Minju <span class="badge r">R3</span><span class="badge g">G4</span></span>
+    </div>
+    <div class="fields">
+      <div>
+        <label>Timing / location preference</label>
+        <select name="d1_timing">
+          <option value="">— no preference —</option>
+          <option value="Brussels ~5:30–6pm">Brussels ~5:30–6pm</option>
+          <option value="Leuven ~6:30pm">Leuven ~6:30pm</option>
+        </select>
+      </div>
+      <div>
+        <label>Restaurant suggestion(s)</label>
+        <input type="text" name="d1_restaurant" placeholder="e.g. Domus, De Blauwe Kater…" />
+      </div>
+      <div class="full-width">
+        <label>Dietary restrictions / notes</label>
+        <textarea name="d1_dietary" rows="2" placeholder="Vegetarian, allergies, anything else…"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="d2">
+    <div class="card-header">
+      <span class="dinner-num">Dinner 2</span>
+      <span class="dinner-date">Wednesday, May 20</span>
+      <span class="dinner-loc">Brussels or Leuven</span>
+    </div>
+    <p class="dinner-note">We finish at the Hermes Building around 4:30pm. Option for an early dinner in Brussels or back to Leuven for a normal-time dinner.</p>
+    <div class="students">
+      <span class="student-chip">Sidra <span class="badge r">R1</span><span class="badge g">G7</span></span>
+      <span class="student-chip">Yadiel <span class="badge r">R4</span><span class="badge g">G1</span></span>
+      <span class="student-chip">Bobby <span class="badge r">R7</span><span class="badge g">G2</span></span>
+      <span class="student-chip">Mihika <span class="badge r">R6</span><span class="badge g">G3</span></span>
+      <span class="student-chip">Lauryn <span class="badge r">R5</span><span class="badge g">G4</span></span>
+      <span class="student-chip">Tyler <span class="badge r">R2</span><span class="badge g">G5</span></span>
+    </div>
+    <div class="fields">
+      <div>
+        <label>Timing / location preference</label>
+        <select name="d2_timing">
+          <option value="">— no preference —</option>
+          <option value="Brussels ~5pm">Brussels ~5pm</option>
+          <option value="Leuven ~6:30pm">Leuven ~6:30pm</option>
+        </select>
+      </div>
+      <div>
+        <label>Restaurant suggestion(s)</label>
+        <input type="text" name="d2_restaurant" placeholder="e.g. Domus, De Blauwe Kater…" />
+      </div>
+      <div class="full-width">
+        <label>Dietary restrictions / notes</label>
+        <textarea name="d2_dietary" rows="2" placeholder="Vegetarian, allergies, anything else…"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="d3">
+    <div class="card-header">
+      <span class="dinner-num">Dinner 3</span>
+      <span class="dinner-date">Thursday, May 21</span>
+      <span class="dinner-loc">Leuven</span>
+    </div>
+    <p class="dinner-note">After class in Leuven.</p>
+    <div class="students">
+      <span class="student-chip">Laasya <span class="badge r">R1</span><span class="badge g">G6</span></span>
+      <span class="student-chip">James <span class="badge r">R4</span><span class="badge g">G1</span></span>
+      <span class="student-chip">Ari <span class="badge r">R7</span><span class="badge g">G2</span></span>
+      <span class="student-chip">Alyssa D. <span class="badge r">R6</span><span class="badge g">G3</span></span>
+      <span class="student-chip">Nicole <span class="badge r">R5</span><span class="badge g">G4</span></span>
+      <span class="student-chip">Meghan <span class="badge r">R3</span><span class="badge g">G7</span></span>
+    </div>
+    <div class="fields">
+      <div>
+        <label>Timing / location preference</label>
+        <select name="d3_timing">
+          <option value="">— no preference —</option>
+          <option value="Early ~6pm">Early ~6pm</option>
+          <option value="Later ~7:30pm">Later ~7:30pm</option>
+        </select>
+      </div>
+      <div>
+        <label>Restaurant suggestion(s)</label>
+        <input type="text" name="d3_restaurant" placeholder="e.g. Domus, De Blauwe Kater…" />
+      </div>
+      <div class="full-width">
+        <label>Dietary restrictions / notes</label>
+        <textarea name="d3_dietary" rows="2" placeholder="Vegetarian, allergies, anything else…"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="d4">
+    <div class="card-header">
+      <span class="dinner-num">Dinner 4</span>
+      <span class="dinner-date">Saturday, May 23</span>
+      <span class="dinner-loc">Brussels or Leuven</span>
+    </div>
+    <p class="dinner-note">Atomium visit ends ~1:30pm. We could do a group lunch in Brussels right after, or head back to Leuven for dinner.</p>
+    <div class="warn">⚠ Note: Bina and Alyssa H. are in the same room and project group — unavoidable conflict.</div>
+    <div class="students">
+      <span class="student-chip">Bina <span class="badge r">R5</span><span class="badge g">G5</span></span>
+      <span class="student-chip">Alyssa H. <span class="badge r">R5</span><span class="badge g">G5</span></span>
+      <span class="student-chip">Bennett <span class="badge r">R2</span><span class="badge g">G7</span></span>
+      <span class="student-chip">Manav <span class="badge r">R4</span><span class="badge g">G3</span></span>
+      <span class="student-chip">Geo <span class="badge r">R3</span><span class="badge g">G6</span></span>
+    </div>
+    <div class="fields">
+      <div>
+        <label>Timing / location preference</label>
+        <select name="d4_timing">
+          <option value="">— no preference —</option>
+          <option value="Brussels lunch ~1:30–2pm">Brussels lunch ~1:30–2pm</option>
+          <option value="Leuven dinner ~6:30pm">Leuven dinner ~6:30pm</option>
+        </select>
+      </div>
+      <div>
+        <label>Restaurant suggestion(s)</label>
+        <input type="text" name="d4_restaurant" placeholder="e.g. Domus, De Blauwe Kater…" />
+      </div>
+      <div class="full-width">
+        <label>Dietary restrictions / notes</label>
+        <textarea name="d4_dietary" rows="2" placeholder="Vegetarian, allergies, anything else…"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="d5">
+    <div class="card-header">
+      <span class="dinner-num">Dinner 5</span>
+      <span class="dinner-date">Tuesday, May 26</span>
+      <span class="dinner-loc">Leuven</span>
+    </div>
+    <p class="dinner-note">After class in Leuven.</p>
+    <div class="students">
+      <span class="student-chip">Isabel <span class="badge r">R1</span><span class="badge g">G6</span></span>
+      <span class="student-chip">Hamza <span class="badge r">R4</span><span class="badge g">G1</span></span>
+      <span class="student-chip">Rayna <span class="badge r">R6</span><span class="badge g">G2</span></span>
+      <span class="student-chip">Rishi <span class="badge r">R2</span><span class="badge g">G3</span></span>
+      <span class="student-chip">Elise <span class="badge r">R3</span><span class="badge g">G4</span></span>
+      <span class="student-chip">Charlie <span class="badge r">R7</span><span class="badge g">G5</span></span>
+    </div>
+    <div class="fields">
+      <div>
+        <label>Timing / location preference</label>
+        <select name="d5_timing">
+          <option value="">— no preference —</option>
+          <option value="Early ~6pm">Early ~6pm</option>
+          <option value="Later ~7:30pm">Later ~7:30pm</option>
+        </select>
+      </div>
+      <div>
+        <label>Restaurant suggestion(s)</label>
+        <input type="text" name="d5_restaurant" placeholder="e.g. Domus, De Blauwe Kater…" />
+      </div>
+      <div class="full-width">
+        <label>Dietary restrictions / notes</label>
+        <textarea name="d5_dietary" rows="2" placeholder="Vegetarian, allergies, anything else…"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="submit-row">
+    <button type="submit" id="submitBtn">Submit my preferences</button>
+    <div id="status"></div>
+  </div>
+
+</form>
+
+<script>
+document.getElementById("plannerForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById("submitBtn");
+  const status = document.getElementById("status");
+  btn.disabled = true;
+  btn.textContent = "Submitting…";
+  status.textContent = "";
+
+  const fd = new FormData(this);
+  const fields = {
+    "Student Name":      fd.get("studentName"),
+    "D1 Timing":         fd.get("d1_timing"),
+    "D1 Restaurant":     fd.get("d1_restaurant"),
+    "D1 Dietary":        fd.get("d1_dietary"),
+    "D2 Timing":         fd.get("d2_timing"),
+    "D2 Restaurant":     fd.get("d2_restaurant"),
+    "D2 Dietary":        fd.get("d2_dietary"),
+    "D3 Timing":         fd.get("d3_timing"),
+    "D3 Restaurant":     fd.get("d3_restaurant"),
+    "D3 Dietary":        fd.get("d3_dietary"),
+    "D4 Timing":         fd.get("d4_timing"),
+    "D4 Restaurant":     fd.get("d4_restaurant"),
+    "D4 Dietary":        fd.get("d4_dietary"),
+    "D5 Timing":         fd.get("d5_timing"),
+    "D5 Restaurant":     fd.get("d5_restaurant"),
+    "D5 Dietary":        fd.get("d5_dietary"),
+  };
+
+  try {
+    const res = await fetch("/api/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ fields })
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error?.message || "Unknown error");
+    }
+
+    status.className = "success";
+    status.textContent = "✓ Preferences saved! Thank you.";
+    btn.textContent = "Submitted";
+  } catch (err) {
+    status.className = "error";
+    status.textContent = "Something went wrong: " + err.message;
+    btn.disabled = false;
+    btn.textContent = "Submit my preferences";
+  }
+});
+</script>
+
+</body>
+</html>
