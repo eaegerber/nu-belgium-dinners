@@ -16,7 +16,11 @@
   .dinner-loc { font-size: 0.75rem; background: #f0f0f0; border-radius: 6px; padding: 2px 8px; color: #444; }
   .dinner-note { font-size: 0.78rem; color: #888; margin-bottom: 0.85rem; }
   .students { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1rem; }
-  .student-chip { display: flex; align-items: center; gap: 4px; background: #f7f8fc; border: 1px solid #e5e8f0; border-radius: 8px; padding: 4px 10px; font-size: 0.8rem; }
+  .student-chip { display: flex; align-items: center; gap: 4px; background: #f7f8fc; border: 1px solid #e5e8f0; border-radius: 8px; padding: 4px 10px; font-size: 0.8rem; cursor: default; }
+  .student-chip.clickable { cursor: pointer; transition: background 0.15s, border-color 0.15s; }
+  .student-chip.clickable:hover { background: #e8f0ff; border-color: #4a7fcb; }
+  .student-chip.selected { background: #2a52be; border-color: #2a52be; color: #fff; font-weight: 600; }
+  .student-chip.selected .badge { background: rgba(255,255,255,0.25); color: #fff; }
   .badge { font-size: 0.65rem; padding: 1px 5px; border-radius: 4px; }
   .r { background: #deeeff; color: #0a3d7c; }
   .g { background: #e2f5d6; color: #1f5208; }
@@ -40,16 +44,18 @@
 <!-- No API keys here — they live in Netlify environment variables -->
 
 <h1>NU Belgium · Dinner Groups</h1>
-<p class="subtitle">Find your dinner group below, then fill in your preferences. Submit once for all dinners.</p>
+<p class="subtitle">Find your dinner group below, click your name, then fill in your preferences. Submit once. The tags next to your name are your Room (e.g. R1 means you're in Room 1) and Project Group (e.g. G1 means you're in Group 1)--This was just for Dr. Gerber to try to make sure that as many people get dinner with "new" people as much as possible.</p>
 
 <form id="plannerForm">
 
   <!-- STUDENT NAME -->
   <div class="card">
-    <div style="margin-bottom:0.75rem">
-      <label for="studentName" style="font-size:0.9rem;font-weight:600;color:#222;">Your name</label>
-      <input type="text" id="studentName" name="studentName" placeholder="First and last name" required />
+    <div style="margin-bottom:0.25rem">
+      <label style="font-size:0.9rem;font-weight:600;color:#222;">Your name</label>
+      <p style="font-size:0.78rem;color:#888;margin:4px 0 8px;">Click your name where it appears in your dinner group below.</p>
     </div>
+    <div id="nameDisplay" style="font-size:0.9rem;color:#888;font-style:italic;">No name selected yet</div>
+    <input type="hidden" id="studentName" name="studentName" required />
   </div>
 
   <!-- DINNER CARDS -->
@@ -60,13 +66,13 @@
       <span class="dinner-date">Monday, May 18</span>
       <span class="dinner-loc">Brussels or Leuven</span>
     </div>
-    <p class="dinner-note">We finish at the European Commission around 5pm. We can stay for dinner in Brussels, or take the train back and eat in Leuven.</p>
+    <p class="dinner-note">We finish at the EEAS around 5pm. We can stay for dinner in Brussels, or take the train back and eat in Leuven.</p>
     <div class="students">
-      <span class="student-chip">Maira <span class="badge r">R1</span><span class="badge g">G6</span></span>
-      <span class="student-chip">Oliver <span class="badge r">R7</span><span class="badge g">G1</span></span>
-      <span class="student-chip">Anjali <span class="badge r">R6</span><span class="badge g">G2</span></span>
-      <span class="student-chip">Vineeth <span class="badge r">R2</span><span class="badge g">G7</span></span>
-      <span class="student-chip">Minju <span class="badge r">R3</span><span class="badge g">G4</span></span>
+      <span class="student-chip" data-name="Maira">Maira <span class="badge r">R1</span><span class="badge g">G6</span></span>
+      <span class="student-chip" data-name="Oliver">Oliver <span class="badge r">R7</span><span class="badge g">G1</span></span>
+      <span class="student-chip" data-name="Anjali">Anjali <span class="badge r">R6</span><span class="badge g">G2</span></span>
+      <span class="student-chip" data-name="Vineeth">Vineeth <span class="badge r">R2</span><span class="badge g">G7</span></span>
+      <span class="student-chip" data-name="Minju">Minju <span class="badge r">R3</span><span class="badge g">G4</span></span>
     </div>
     <div class="fields">
       <div>
@@ -79,7 +85,7 @@
       </div>
       <div>
         <label>Restaurant suggestion(s)</label>
-        <input type="text" name="d1_restaurant" placeholder="e.g. Domus, De Blauwe Kater…" />
+        <input type="text" name="d1_restaurant" placeholder="e.g. Dewerf, Resto Ribs…" />
       </div>
       <div class="full-width">
         <label>Dietary restrictions / notes</label>
@@ -96,12 +102,12 @@
     </div>
     <p class="dinner-note">We finish at the Hermes Building around 4:30pm. Option for an early dinner in Brussels or back to Leuven for a normal-time dinner.</p>
     <div class="students">
-      <span class="student-chip">Sidra <span class="badge r">R1</span><span class="badge g">G7</span></span>
-      <span class="student-chip">Yadiel <span class="badge r">R4</span><span class="badge g">G1</span></span>
-      <span class="student-chip">Bobby <span class="badge r">R7</span><span class="badge g">G2</span></span>
-      <span class="student-chip">Mihika <span class="badge r">R6</span><span class="badge g">G3</span></span>
-      <span class="student-chip">Lauryn <span class="badge r">R5</span><span class="badge g">G4</span></span>
-      <span class="student-chip">Tyler <span class="badge r">R2</span><span class="badge g">G5</span></span>
+      <span class="student-chip" data-name="Sidra">Sidra <span class="badge r">R1</span><span class="badge g">G7</span></span>
+      <span class="student-chip" data-name="Yadiel">Yadiel <span class="badge r">R4</span><span class="badge g">G1</span></span>
+      <span class="student-chip" data-name="Bobby">Bobby <span class="badge r">R7</span><span class="badge g">G2</span></span>
+      <span class="student-chip" data-name="Mihika">Mihika <span class="badge r">R6</span><span class="badge g">G3</span></span>
+      <span class="student-chip" data-name="Lauryn">Lauryn <span class="badge r">R5</span><span class="badge g">G4</span></span>
+      <span class="student-chip" data-name="Tyler">Tyler <span class="badge r">R2</span><span class="badge g">G5</span></span>
     </div>
     <div class="fields">
       <div>
@@ -114,7 +120,7 @@
       </div>
       <div>
         <label>Restaurant suggestion(s)</label>
-        <input type="text" name="d2_restaurant" placeholder="e.g. Domus, De Blauwe Kater…" />
+        <input type="text" name="d2_restaurant" placeholder="e.g. Dewerf, Resto Ribs…" />
       </div>
       <div class="full-width">
         <label>Dietary restrictions / notes</label>
@@ -131,12 +137,12 @@
     </div>
     <p class="dinner-note">After class in Leuven.</p>
     <div class="students">
-      <span class="student-chip">Laasya <span class="badge r">R1</span><span class="badge g">G6</span></span>
-      <span class="student-chip">James <span class="badge r">R4</span><span class="badge g">G1</span></span>
-      <span class="student-chip">Ari <span class="badge r">R7</span><span class="badge g">G2</span></span>
-      <span class="student-chip">Alyssa D. <span class="badge r">R6</span><span class="badge g">G3</span></span>
-      <span class="student-chip">Nicole <span class="badge r">R5</span><span class="badge g">G4</span></span>
-      <span class="student-chip">Meghan <span class="badge r">R3</span><span class="badge g">G7</span></span>
+      <span class="student-chip" data-name="Laasya">Laasya <span class="badge r">R1</span><span class="badge g">G6</span></span>
+      <span class="student-chip" data-name="James">James <span class="badge r">R4</span><span class="badge g">G1</span></span>
+      <span class="student-chip" data-name="Ari">Ari <span class="badge r">R7</span><span class="badge g">G2</span></span>
+      <span class="student-chip" data-name="Alyssa D.">Alyssa D. <span class="badge r">R6</span><span class="badge g">G3</span></span>
+      <span class="student-chip" data-name="Nicole">Nicole <span class="badge r">R5</span><span class="badge g">G4</span></span>
+      <span class="student-chip" data-name="Meghan">Meghan <span class="badge r">R3</span><span class="badge g">G7</span></span>
     </div>
     <div class="fields">
       <div>
@@ -149,7 +155,7 @@
       </div>
       <div>
         <label>Restaurant suggestion(s)</label>
-        <input type="text" name="d3_restaurant" placeholder="e.g. Domus, De Blauwe Kater…" />
+        <input type="text" name="d3_restaurant" placeholder="e.g. Dewerf, Resto Ribs…" />
       </div>
       <div class="full-width">
         <label>Dietary restrictions / notes</label>
@@ -165,13 +171,12 @@
       <span class="dinner-loc">Brussels or Leuven</span>
     </div>
     <p class="dinner-note">Atomium visit ends ~1:30pm. We could do a group lunch in Brussels right after, or head back to Leuven for dinner.</p>
-    <div class="warn">⚠ Note: Bina and Alyssa H. are in the same room and project group — unavoidable conflict.</div>
     <div class="students">
-      <span class="student-chip">Bina <span class="badge r">R5</span><span class="badge g">G5</span></span>
-      <span class="student-chip">Alyssa H. <span class="badge r">R5</span><span class="badge g">G5</span></span>
-      <span class="student-chip">Bennett <span class="badge r">R2</span><span class="badge g">G7</span></span>
-      <span class="student-chip">Manav <span class="badge r">R4</span><span class="badge g">G3</span></span>
-      <span class="student-chip">Geo <span class="badge r">R3</span><span class="badge g">G6</span></span>
+      <span class="student-chip" data-name="Bina">Bina <span class="badge r">R5</span><span class="badge g">G5</span></span>
+      <span class="student-chip" data-name="Alyssa H.">Alyssa H. <span class="badge r">R5</span><span class="badge g">G5</span></span>
+      <span class="student-chip" data-name="Bennett">Bennett <span class="badge r">R2</span><span class="badge g">G7</span></span>
+      <span class="student-chip" data-name="Manav">Manav <span class="badge r">R4</span><span class="badge g">G3</span></span>
+      <span class="student-chip" data-name="Geo">Geo <span class="badge r">R3</span><span class="badge g">G6</span></span>
     </div>
     <div class="fields">
       <div>
@@ -184,7 +189,7 @@
       </div>
       <div>
         <label>Restaurant suggestion(s)</label>
-        <input type="text" name="d4_restaurant" placeholder="e.g. Domus, De Blauwe Kater…" />
+        <input type="text" name="d4_restaurant" placeholder="e.g. Dewerf, Resto Ribs…" />
       </div>
       <div class="full-width">
         <label>Dietary restrictions / notes</label>
@@ -201,12 +206,12 @@
     </div>
     <p class="dinner-note">After class in Leuven.</p>
     <div class="students">
-      <span class="student-chip">Isabel <span class="badge r">R1</span><span class="badge g">G6</span></span>
-      <span class="student-chip">Hamza <span class="badge r">R4</span><span class="badge g">G1</span></span>
-      <span class="student-chip">Rayna <span class="badge r">R6</span><span class="badge g">G2</span></span>
-      <span class="student-chip">Rishi <span class="badge r">R2</span><span class="badge g">G3</span></span>
-      <span class="student-chip">Elise <span class="badge r">R3</span><span class="badge g">G4</span></span>
-      <span class="student-chip">Charlie <span class="badge r">R7</span><span class="badge g">G5</span></span>
+      <span class="student-chip" data-name="Isabel">Isabel <span class="badge r">R1</span><span class="badge g">G6</span></span>
+      <span class="student-chip" data-name="Hamza">Hamza <span class="badge r">R4</span><span class="badge g">G1</span></span>
+      <span class="student-chip" data-name="Rayna">Rayna <span class="badge r">R6</span><span class="badge g">G2</span></span>
+      <span class="student-chip" data-name="Rishi">Rishi <span class="badge r">R2</span><span class="badge g">G3</span></span>
+      <span class="student-chip" data-name="Elise">Elise <span class="badge r">R3</span><span class="badge g">G4</span></span>
+      <span class="student-chip" data-name="Charlie">Charlie <span class="badge r">R7</span><span class="badge g">G5</span></span>
     </div>
     <div class="fields">
       <div>
@@ -219,7 +224,7 @@
       </div>
       <div>
         <label>Restaurant suggestion(s)</label>
-        <input type="text" name="d5_restaurant" placeholder="e.g. Domus, De Blauwe Kater…" />
+        <input type="text" name="d5_restaurant" placeholder="e.g. Dewerf, Resto Ribs…" />
       </div>
       <div class="full-width">
         <label>Dietary restrictions / notes</label>
@@ -236,6 +241,21 @@
 </form>
 
 <script>
+// Name selection via chip click
+document.querySelectorAll(".student-chip[data-name]").forEach(chip => {
+  chip.classList.add("clickable");
+  chip.addEventListener("click", () => {
+    document.querySelectorAll(".student-chip").forEach(c => c.classList.remove("selected"));
+    chip.classList.add("selected");
+    const name = chip.dataset.name;
+    document.getElementById("studentName").value = name;
+    document.getElementById("nameDisplay").textContent = "✓ Logged in as: " + name;
+    document.getElementById("nameDisplay").style.color = "#1a7a3a";
+    document.getElementById("nameDisplay").style.fontStyle = "normal";
+    document.getElementById("nameDisplay").style.fontWeight = "600";
+  });
+});
+
 document.getElementById("plannerForm").addEventListener("submit", async function(e) {
   e.preventDefault();
   const btn = document.getElementById("submitBtn");
